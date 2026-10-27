@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)file:///D:/CampusLoop_Referral_Tracker_Demo.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CampusLoop — NxtWave Growth Challenge Demo</title>
+<style>
+:root{--navy:#132342;--blue:#2a67d6;--cyan:#47c4db;--bg:#f3f6fc;--ink:#26344b;--muted:#687891;--line:#dbe5f4;--green:#239974;--orange:#ffae42}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,Segoe UI,Arial,sans-serif}
+header{background:linear-gradient(120deg,#132342,#244d93);color:#fff;padding:26px max(20px,calc((100vw - 1120px)/2))}
+header .eyebrow{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:#9fe9f4;font-weight:800}
+h1{font-size:clamp(26px,4vw,38px);line-height:1.12;margin:8px 0}header p{max-width:760px;color:#e1eafa;margin:10px 0 0}
+main{max-width:1120px;margin:22px auto;padding:0 18px 42px}
+.notice{border:1px solid #f2cf8a;background:#fff7e5;color:#6f4a0b;padding:11px 14px;border-radius:12px;margin-bottom:16px;font-size:13px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+.metric,.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:17px;box-shadow:0 4px 14px #17305b0a}
+.metric span{display:block;color:var(--muted);font-size:12px;font-weight:700}.metric strong{font-size:28px;color:var(--navy);display:block;margin-top:3px}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel h2{font-size:17px;margin:0 0 12px;color:var(--navy)}
+label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin:10px 0 5px}
+input,select{width:100%;padding:10px 11px;border:1px solid #cbd7e9;border-radius:9px;font:inherit;background:#fff;color:var(--ink)}
+button{border:0;border-radius:9px;padding:10px 13px;font:inherit;font-weight:750;cursor:pointer;background:var(--blue);color:#fff}
+button.secondary{background:#e9f0fc;color:#234b91}button.danger{background:#fff0ee;color:#a43e32}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.code-list{display:grid;gap:8px}.code-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fbfcff}
+.code-row small{display:block;color:var(--muted)}.pill{font-size:11px;font-weight:800;background:#e4f8f1;color:#17765b;border-radius:999px;padding:4px 7px}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;border-bottom:1px solid var(--line);padding:9px 6px}th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.bars{display:grid;gap:10px}.bar-line{display:grid;grid-template-columns:115px 1fr 35px;gap:8px;align-items:center;font-size:12px}.bar{height:9px;background:#edf1f8;border-radius:20px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:20px}
+footer{color:var(--muted);font-size:12px;margin-top:16px}
+@media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.bar-line{grid-template-columns:95px 1fr 28px}}
+</style>
+</head>
+<body>
+<header><div class="eyebrow">NxtWave Growth Challenge • Working prototype</div><h1>CampusLoop</h1><p>A simple referral and source tracker for the free workshop: <b>Build Your First AI Project in 60 Minutes.</b> Focus on which campus communities bring completed registrations.</p></header>
+<main>
+<div class="notice"><b>Simulation only:</b> this prototype stores demo data in this browser. It does not contact students, send messages, or submit real registrations. Sample records are labelled simulated.</div>
+<div class="metrics">
+ <div class="metric"><span>Registration target</span><strong>500</strong></div>
+ <div class="metric"><span>Demo registrations logged</span><strong id="total">156</strong></div>
+ <div class="metric"><span>Active referral codes</span><strong id="codeCount">3</strong></div>
+ <div class="metric"><span>Progress to target</span><strong id="progress">31%</strong></div>
+</div>
+<div class="layout">
+<section class="panel">
+<h2>1. Create a campus referral code</h2>
+<label for="ambassador">Ambassador / partner name</label><input id="ambassador" placeholder="e.g., CSE Tech Club">
+<label for="campus">College / community</label><input id="campus" placeholder="e.g., ABC Engineering College">
+<label for="channel">Channel</label><select id="channel"><option>College tech club</option><option>Placement cell / CR</option><option>WhatsApp group</option><option>Student referral</option><option>Instagram / organic</option><option>Paid promotion</option><option>Email</option></select>
+<div class="actions"><button id="createCode">Create referral code</button></div>
+<div id="codeList" class="code-list" style="margin-top:12px"><div class="code-row"><div><b>CSE01</b><small>CSE Tech Club · Sample Engineering College · College tech club</small></div><button class="secondary" onclick="copyCode('CSE01')">Copy</button></div><div class="code-row"><div><b>PLAC02</b><small>Placement CR · Sample Engineering College · Placement cell / CR</small></div><button class="secondary" onclick="copyCode('PLAC02')">Copy</button></div><div class="code-row"><div><b>STUD03</b><small>Student Ambassador · Sample Engineering College · Student referral</small></div><button class="secondary" onclick="copyCode('STUD03')">Copy</button></div></div>
+</section>
+<section class="panel">
+<h2>2. Log a simulated registration</h2>
+<label for="refCode">Referral code / source</label><select id="refCode"><option value="CSE01">CSE01 — College tech club</option><option value="PLAC02">PLAC02 — Placement cell / CR</option><option value="STUD03">STUD03 — Student referral</option></select>
+<label for="regCount">Number of registrations</label><input id="regCount" type="number" min="1" max="500" value="1">
+<label for="regDay">Campaign day</label><select id="regDay"><option>Day 1</option><option>Day 2</option><option>Day 3</option><option>Day 4</option><option>Day 5</option><option>Day 6</option><option>Day 7</option></select>
+<div class="actions"><button id="logRegistration">Log demo registrations</button><button class="secondary" id="addSamples">Load sample data</button></div>
+<p style="font-size:12px;color:var(--muted)">Use sample data to demonstrate how the dashboard responds. It is not evidence of actual campaign performance.</p>
+</section>
+<section class="panel">
+<h2>3. Source performance</h2>
+<div id="bars" class="bars"><div class="bar-line"><span>Student referral</span><div class="bar"><i style="width:100%"></i></div><b>69</b></div><div class="bar-line"><span>College tech club</span><div class="bar"><i style="width:78.26086956521739%"></i></div><b>54</b></div><div class="bar-line"><span>Placement cell / CR</span><div class="bar"><i style="width:47.82608695652174%"></i></div><b>33</b></div></div>
+</section>
+<section class="panel">
+<h2>4. Registration log</h2>
+<div style="overflow:auto"><table><thead><tr><th>Day</th><th>Source / code</th><th>Partner</th><th>Count</th><th>Type</th></tr></thead><tbody id="log"><tr><td>Day 2</td><td>STUD03</td><td>Student Ambassador</td><td>23</td><td><span class="pill">SIMULATED</span></td></tr><tr><td>Day 1</td><td>PLAC02</td><td>Placement CR</td><td>11</td><td><span class="pill">SIMULATED</span></td></tr><tr><td>Day 1</td><td>CSE01</td><td>CSE Tech Club</td><td>18</td><td><span class="pill">SIMULATED</span></td></tr><tr><td>Day 2</td><td>STUD03</td><td>Student Ambassador</td><td>23</td><td><span class="pill">SIMULATED</span></td></tr><tr><td>Day 1</td><td>PLAC02</td><td>Placement CR</td><td>11</td><td><span class="pill">SIMULATED</span></td></tr><tr><td>Day 1</td><td>CSE01</td><td>CSE Tech Club</td><td>18</td><td><span class="pill">SIMULATED</span></td></tr><tr><td>Day 2</td><td>STUD03</td><td>Student Ambassador</td><td>23</td><td><span class="pill">SIMULATED</span></td></tr><tr><td>Day 1</td><td>PLAC02</td><td>Placement CR</td><td>11</td><td><span class="pill">SIMULATED</span></td></tr><tr><td>Day 1</td><td>CSE01</td><td>CSE Tech Club</td><td>18</td><td><span class="pill">SIMULATED</span></td></tr></tbody></table></div>
+<div class="actions"><button class="secondary" id="exportCsv">Export CSV</button><button class="danger" id="reset">Reset demo</button></div>
+</section>
+</div>
+<footer>Growth decision rule: check registrations daily, compare sources, then shift effort toward the strongest sources. Before a real launch, add privacy notice, consent, duplicate validation, and verified registration capture.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let codes=[], logs=[], serial=1;
+function slug(s){return s.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,5)||'CAMPUS'}
+function render(){
+ $('total').textContent=logs.reduce((a,l)=>a+l.count,0);
+ $('codeCount').textContent=codes.length;
+ $('progress').textContent=Math.min(100,Math.round(logs.reduce((a,l)=>a+l.count,0)/500*100))+'%';
+ $('codeList').innerHTML=codes.length?codes.map(c=>`<div class="code-row"><div><b>${c.code}</b><small>${esc(c.partner)} · ${esc(c.campus)} · ${esc(c.channel)}</small></div><button class="secondary" onclick="copyCode('${c.code}')">Copy</button></div>`).join(''):'<small style="color:var(--muted)">No codes yet. Create your first campus code.</small>';
+ $('refCode').innerHTML=codes.map(c=>`<option value="${c.code}">${c.code} — ${esc(c.channel)}</option>`).join('');
+ if(!codes.length)$('refCode').innerHTML='<option value="DIRECT">DIRECT — no code</option>';
+ $('log').innerHTML=logs.length?logs.slice().reverse().map(l=>`<tr><td>${l.day}</td><td>${esc(l.code)}</td><td>${esc(l.partner)}</td><td>${l.count}</td><td><span class="pill">${l.type}</span></td></tr>`).join(''):'<tr><td colspan="5" style="color:var(--muted)">No registrations logged yet.</td></tr>';
+ let totals={};logs.forEach(l=>{let key=l.channel||'Direct / unassigned';totals[key]=(totals[key]||0)+l.count});
+ let entries=Object.entries(totals).sort((a,b)=>b[1]-a[1]);let max=Math.max(1,...entries.map(e=>e[1]));
+ $('bars').innerHTML=entries.length?entries.map(([k,v])=>`<div class="bar-line"><span>${esc(k)}</span><div class="bar"><i style="width:${v/max*100}%"></i></div><b>${v}</b></div>`).join(''):'<p style="color:var(--muted)">No data yet.</p>';
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+window.copyCode=async code=>{try{await navigator.clipboard.writeText(code);alert('Copied '+code)}catch(e){alert('Referral code: '+code)}}
+$('createCode').onclick=()=>{
+ let partner=$('ambassador').value.trim(), campus=$('campus').value.trim(), channel=$('channel').value;
+ if(!partner||!campus){alert('Please enter a partner name and college/community.');return}
+ let code=slug(partner)+String(serial++).padStart(2,'0');
+ codes.push({partner,campus,channel,code});render();
+};
+$('logRegistration').onclick=()=>{
+ let code=$('refCode').value||'DIRECT', count=Number($('regCount').value);
+ if(!Number.isInteger(count)||count<1||count>500){alert('Enter a whole number from 1 to 500.');return}
+ let c=codes.find(x=>x.code===code);
+ logs.push({day:$('regDay').value,code,partner:c?c.partner:'Direct / unassigned',channel:c?c.channel:'Direct / unassigned',count,type:'SIMULATED'});
+ render();
+};
+$('addSamples').onclick=()=>{
+ if(!codes.length){
+  codes=[{partner:'CSE Tech Club',campus:'Sample Engineering College',channel:'College tech club',code:'CSE01'},
+         {partner:'Placement CR',campus:'Sample Engineering College',channel:'Placement cell / CR',code:'PLAC02'},
+         {partner:'Student Ambassador',campus:'Sample Engineering College',channel:'Student referral',code:'STUD03'}];serial=4;
+ }
+ logs.push({day:'Day 1',code:'CSE01',partner:'CSE Tech Club',channel:'College tech club',count:18,type:'SIMULATED'});
+ logs.push({day:'Day 1',code:'PLAC02',partner:'Placement CR',channel:'Placement cell / CR',count:11,type:'SIMULATED'});
+ logs.push({day:'Day 2',code:'STUD03',partner:'Student Ambassador',channel:'Student referral',count:23,type:'SIMULATED'});
+ render();
+};
+$('exportCsv').onclick=()=>{
+ const rows=[['day','code','partner','channel','count','type'],...logs.map(l=>[l.day,l.code,l.partner,l.channel,l.count,l.type])];
+ const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+ const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='campusloop_demo_registrations.csv';a.click();URL.revokeObjectURL(url);
+};
+$('reset').onclick=()=>{if(confirm('Clear all local demo codes and logs?')){codes=[];logs=[];serial=1;render()}};
+render();
+</script>
+</body></html>
